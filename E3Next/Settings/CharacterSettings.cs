@@ -206,10 +206,48 @@ namespace E3Core.Settings
         public Int32 CPU_ProcessLoopDelay = 50;
         public bool CPU_Camping_PauseAt20Seconds = true;
         public bool CPU_Camping_ShutdownAt5Seconds = true;
-
+        //magician-pet
 		public Dictionary<string, string> PetWeapons = new Dictionary<string, string>();
         public bool AutoPetWeapons = false;
         public bool IgnorePetWeaponRequests = false;
+        private static bool _advMagePet = E3.GeneralSettings.AdvMagePet;
+        public string AdditionalIDsString = string.Empty;
+        //magician-summon-armor
+        public string ArmorSpell = string.Empty;
+        public string ArmorItem = string.Empty;
+        //magician-summon-weapon
+        public string MHWeaponSpell = string.Empty;
+        public string MHWeaponItem = string.Empty;
+        public string OHWeaponSpell = string.Empty;
+        public string OHWeaponItem = string.Empty;
+        public string FireWeaponSpell = string.Empty;
+        public string FireWeaponItem = string.Empty;
+        public string WaterWeaponSpell = string.Empty;
+        public string WaterWeaponItem = string.Empty;
+        public string ShieldWeaponSpell = string.Empty;
+        public string ShieldWeaponItem = string.Empty;
+        public string TauntWeaponSpell = string.Empty;
+        public string TauntWeaponItem = string.Empty;
+        public string SlowWeaponSpell = string.Empty;
+        public string SlowWeaponItem = string.Empty;
+        public string MaloWeaponSpell = string.Empty;
+        public string MaloWeaponItem = string.Empty;
+        public string DispelWeaponSpell = string.Empty;
+        public string DispelWeaponItem = string.Empty;
+        public string SnareWeaponSpell = string.Empty;
+        public string SnareWeaponItem = string.Empty;
+        //magician-summon-focus
+        public string focusEarSpell = string.Empty;
+        public string focusEarItem = string.Empty;
+        public string focusRingSpell = string.Empty;
+        public string focusRingItem = string.Empty;
+        public string focusWaistSpell = string.Empty;
+        public string focusWaistItem = string.Empty;
+        public string focusFaceSpell = string.Empty;
+        public string focusFaceItem = string.Empty;
+        public string focusShouldersSpell = string.Empty;
+        public string focusShouldersItem = string.Empty;
+        //shaman
         public bool AutoCanni = false;
         public int MalosTotemSpellGem;
         public List<Spell> CanniSpell = new List<Spell>();
@@ -385,7 +423,40 @@ namespace E3Core.Settings
             {
                 LoadKeyData("Magician", "Auto-Pet Weapons (On/Off)", ParsedData, ref AutoPetWeapons);
                 LoadKeyData("Magician", "Ignore Pet Weapon Requests (On/Off)", ParsedData, ref IgnorePetWeaponRequests);
+                LoadKeyData("Magician", "Treat WeaponIDs as Empty(##, ##, ##)", ParsedData, ref AdditionalIDsString);
                 LoadKeyData("Magician", "Pet Weapons", ParsedData, PetWeapons);
+                LoadKeyData("Magician", "Armor Spell", ParsedData, ref ArmorSpell);
+                LoadKeyData("Magician", "Armor Item", ParsedData, ref ArmorItem);
+                LoadKeyData("Magician", "Default MainHand(MHW) Spell", ParsedData, ref MHWeaponSpell);
+                LoadKeyData("Magician", "Default MainHand(MHW) Item", ParsedData, ref MHWeaponItem);
+                LoadKeyData("Magician", "Default Offhand(OHW) Spell", ParsedData, ref OHWeaponSpell);
+                LoadKeyData("Magician", "Default Offhand(OHW) Item", ParsedData, ref OHWeaponItem);
+                LoadKeyData("Magician", "Fire Weapon Spell", ParsedData, ref FireWeaponSpell);
+                LoadKeyData("Magician", "Fire Weapon Item", ParsedData, ref FireWeaponItem);
+                LoadKeyData("Magician", "Water Weapon Spell", ParsedData, ref WaterWeaponSpell);
+                LoadKeyData("Magician", "Water Weapon Item", ParsedData, ref WaterWeaponItem);
+                LoadKeyData("Magician", "Shield Weapon Spell", ParsedData, ref ShieldWeaponSpell);
+                LoadKeyData("Magician", "Shield Weapon Item", ParsedData, ref ShieldWeaponItem);
+                LoadKeyData("Magician", "Taunt Weapon Spell", ParsedData, ref TauntWeaponSpell);
+                LoadKeyData("Magician", "Taunt Weapon Item", ParsedData, ref TauntWeaponItem);
+                LoadKeyData("Magician", "Slow Weapon Spell", ParsedData, ref SlowWeaponSpell);
+                LoadKeyData("Magician", "Slow Weapon Item", ParsedData, ref SlowWeaponItem);
+                LoadKeyData("Magician", "Malo Weapon Spell", ParsedData, ref MaloWeaponSpell);
+                LoadKeyData("Magician", "Malo Weapon Item", ParsedData, ref MaloWeaponItem);
+                LoadKeyData("Magician", "Dispel Weapon Spell", ParsedData, ref DispelWeaponSpell);
+                LoadKeyData("Magician", "Dispel Weapon Item", ParsedData, ref DispelWeaponItem);
+                LoadKeyData("Magician", "Snare Weapon Spell", ParsedData, ref SnareWeaponSpell);
+                LoadKeyData("Magician", "Snare Weapon Item", ParsedData, ref SnareWeaponItem);
+                LoadKeyData("Magician", "Focus Ear Spell", ParsedData, ref focusEarSpell);
+                LoadKeyData("Magician", "Focus Ear Item", ParsedData, ref focusEarItem);
+                LoadKeyData("Magician", "Focus Ring Spell", ParsedData, ref focusRingSpell);
+                LoadKeyData("Magician", "Focus Ring Item", ParsedData, ref focusRingItem);
+                LoadKeyData("Magician", "Focus Waist Spell", ParsedData, ref focusWaistSpell);
+                LoadKeyData("Magician", "Focus Waist Item", ParsedData, ref focusWaistItem);
+                LoadKeyData("Magician", "Focus Face Spell", ParsedData, ref focusFaceSpell);
+                LoadKeyData("Magician", "Focus Face Item", ParsedData, ref focusFaceItem);
+                LoadKeyData("Magician", "Focus Shoulders Spell", ParsedData, ref focusShouldersSpell);
+                LoadKeyData("Magician", "Focus Shoulders Item", ParsedData, ref focusShouldersItem);
             }
 
             if (CharacterClass == Class.Shaman)
@@ -771,6 +842,50 @@ namespace E3Core.Settings
                 section.Keys.AddKey("Auto-Pet Weapons (On/Off)", "Off");
                 section.Keys.AddKey("Ignore Pet Weapon Requests (On/Off)", "Off");
                 section.Keys.AddKey("Pet Weapons", "");
+                section.Keys.AddKey("Armor Spell", "");
+                section.Keys.AddKey("Armor Item", "");
+                section.Keys.AddKey("Default MainHand(MHW) Spell", "");
+                section.Keys.AddKey("Default MainHand(MHW) Item", "");
+                section.Keys.AddKey("Default Offhand(OHW) Spell", "");
+                section.Keys.AddKey("Default Offhand(OHW) Item", "");
+                section.Keys.AddKey("Focus Ear Spell", "");
+                section.Keys.AddKey("Focus Ear Item", "");
+                section.Keys.AddKey("Focus Ring Spell", "");
+                section.Keys.AddKey("Focus Ring Item", "");
+                section.Keys.AddKey("Focus Waist Spell", "");
+                section.Keys.AddKey("Focus Waist Item", "");
+                section.Keys.AddKey("Focus Face Spell", "");
+                section.Keys.AddKey("Focus Face Item", "");
+                section.Keys.AddKey("Focus Shoulders Spell", "");
+                section.Keys.AddKey("Focus Shoulders Item", "");
+                if (_advMagePet)
+                {
+                    section.Keys.AddKey("Treat WeaponIDs as Empty(##, ##, ##)", "");
+
+                    section.Keys.AddKey("Fire Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Fire Weapon Item", "Summoned: Fist of Flame");
+
+                    section.Keys.AddKey("Water Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Water Weapon Item", "Summoned: Orb of Chilling Water");
+
+                    section.Keys.AddKey("Shield Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Shield Weapon Item", "Summoned: Buckler of Draining Defense");
+
+                    section.Keys.AddKey("Taunt Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Taunt Weapon Item", "Summoned: Short Sword of Warding");
+
+                    section.Keys.AddKey("Slow Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Slow Weapon Item", "Summoned: Mace of Temporal Distortion");
+
+                    section.Keys.AddKey("Malo Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Malo Weapon Item", "Summoned: Spear of Maliciousness");
+
+                    section.Keys.AddKey("Dispel Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Dispel Weapon Item", "Summoned: Wand of Dismissal");
+                    
+                    section.Keys.AddKey("Snare Weapon Spell", "Grant Spectral Armaments");
+                    section.Keys.AddKey("Snare Weapon Item", "Summoned: Tendon Carver");
+                }
             }
 
             if (CharacterClass == Class.Shaman)

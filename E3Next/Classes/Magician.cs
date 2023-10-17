@@ -21,24 +21,68 @@ namespace E3Core.Classes
     {
         private static IMQ MQ = E3.MQ;
         private static ISpawns _spawns = E3.Spawns;
-        private static string _weaponSpell = "Grant Spectral Armaments";
-        private static string _weaponItem = "Folded Pack of Spectral Armaments";
-        private static string _armorSpell = "Grant Spectral Plate";
-        private static string _armorItem = "Folded Pack of Spectral Plate";
-        private static string _focusSpell = "Grant Enibik's Heirlooms";
-        private static string _focusItem = "Folded Pack of Enibik's Heirlooms";
+        //Weapons
+        private static string _mhweaponSpell = E3.CharacterSettings.MHWeaponSpell;
+        private static string _mhweaponItem = E3.CharacterSettings.MHWeaponItem;
+        private static string _ohweaponSpell = E3.CharacterSettings.OHWeaponSpell;
+        private static string _ohweaponItem = E3.CharacterSettings.OHWeaponItem;
+        private static string _fireweaponSpell = E3.CharacterSettings.FireWeaponSpell;
+        private static string _fireweaponItem = E3.CharacterSettings.FireWeaponItem;
+        private static string _waterweaponSpell = E3.CharacterSettings.WaterWeaponSpell;
+        private static string _waterweaponItem = E3.CharacterSettings.WaterWeaponItem;
+        private static string _shieldweaponSpell = E3.CharacterSettings.ShieldWeaponSpell;
+        private static string _shieldweaponItem = E3.CharacterSettings.ShieldWeaponItem;
+        private static string _tauntweaponSpell = E3.CharacterSettings.TauntWeaponSpell;
+        private static string _tauntdweaponItem = E3.CharacterSettings.TauntWeaponItem;
+        private static string _slowweaponSpell = E3.CharacterSettings.SlowWeaponSpell;
+        private static string _slowweaponItem = E3.CharacterSettings.SlowWeaponItem;
+        private static string _maloweaponSpell = E3.CharacterSettings.MaloWeaponSpell;
+        private static string _maloweaponItem = E3.CharacterSettings.MaloWeaponItem;
+        private static string _dispelweaponSpell = E3.CharacterSettings.DispelWeaponSpell;
+        private static string _dispelweaponItem = E3.CharacterSettings.DispelWeaponItem;
+        private static string _snareweaponSpell = E3.CharacterSettings.SnareWeaponSpell;
+        private static string _snareweaponItem = E3.CharacterSettings.SnareWeaponItem;
+        //Armor
+        private static string _armorSpell = E3.CharacterSettings.ArmorSpell;
+        private static string _armorItem = E3.CharacterSettings.ArmorItem;
+        //FocusItems
+        private static string _focusEarSpell = E3.CharacterSettings.focusEarSpell;
+        private static string _focusEarItem = E3.CharacterSettings.focusEarItem;
+        private static string _focusRingSpell = E3.CharacterSettings.focusRingSpell;
+        private static string _focusRingItem = E3.CharacterSettings.focusRingItem;
+        private static string _focusWaistSpell = E3.CharacterSettings.focusWaistSpell;
+        private static string _focusWaistItem = E3.CharacterSettings.focusWaistItem;
+        private static string _focusFaceSpell = E3.CharacterSettings.focusFaceSpell;
+        private static string _focusFaceItem = E3.CharacterSettings.focusFaceItem;
+        private static string _focusShouldersSpell = E3.CharacterSettings.focusShouldersSpell;
+        private static string _focusShouldersItem = E3.CharacterSettings.focusShouldersItem;
+        //left over need to figure what to do with this
         private static string _weaponBag = "Pouch of Quellious";
         private static string _armorOrHeirloomBag = "Phantom Satchel";
-        private static Dictionary<string, string> _weaponMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            {"Fire", "Summoned: Fist of Flame"},
-            {"Water", "Summoned: Orb of Chilling Water" },
-            {"Shield", "Summoned: Buckler of Draining Defense" },
-            {"Taunt", "Summoned: Short Sword of Warding" },
-            {"Slow", "Summoned: Mace of Temporal Distortion" },
-            {"Malo", "Summoned: Spear of Maliciousness" },
-            {"Dispel", "Summoned: Wand of Dismissal" },
-            {"Snare", "Summoned: Tendon Carver" },
-            {"None", null }
+        //---
+        private static Dictionary<string, (string Spell, string Item)> _weaponMap = new Dictionary<string, (string, string)>(StringComparer.OrdinalIgnoreCase)
+        {
+            {"MHW", (_mhweaponSpell, _mhweaponItem) },
+            {"OHW", (_ohweaponSpell, _ohweaponItem) },
+            {"Fire", (_fireweaponSpell, _fireweaponItem) },
+            {"Water", (_waterweaponSpell, _waterweaponItem) },
+            {"Shield", (_shieldweaponSpell, _shieldweaponItem) },
+            {"Taunt", (_tauntweaponSpell, _tauntdweaponItem) },
+            {"Slow", (_slowweaponSpell, _slowweaponItem) },
+            {"Malo", (_maloweaponSpell, _maloweaponItem) },
+            {"Dispel", (_dispelweaponSpell, _dispelweaponItem) },
+            {"Snare", (_snareweaponSpell, _snareweaponItem) },
+            {"None", (null, null) }
+        };
+
+        private static Dictionary<string, (string Spell, string Item)> _focusMap = new Dictionary<string, (string, string)>(StringComparer.OrdinalIgnoreCase)
+        {
+            {"Ear", (_focusEarSpell, _focusEarItem) },
+            {"Ring", (_focusRingSpell, _focusRingItem) },
+            {"Waist", (_focusWaistSpell, _focusWaistItem) },
+            {"Face", (_focusFaceSpell, _focusFaceItem) },
+            {"Shoulders", (_focusShouldersSpell, _focusShouldersItem) },
+            {"None", (null, null) }
         };
 
         private static Dictionary<int, string> _inventorySlotToPackMap = new Dictionary<int, string>
@@ -55,12 +99,30 @@ namespace E3Core.Classes
             {32, "pack10" },
         };
 
-        private static Dictionary<string, string> _summonedItemMap = new Dictionary<string, string>
+        private static Dictionary<string, string> _summonedItemMap = new Dictionary<string, string>();
+        static Magician()
         {
-            {_weaponSpell, _weaponItem },
-            {_armorSpell, _armorItem },
-            {_focusSpell, _focusItem },
-        };
+            foreach (var weapon in _weaponMap)
+            {
+                if (!string.IsNullOrEmpty(weapon.Value.Spell))
+                {
+                    _summonedItemMap[weapon.Value.Spell] = weapon.Value.Item;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(_armorSpell) && !string.IsNullOrEmpty(_armorItem))
+            {
+                _summonedItemMap[_armorSpell] = _armorItem;
+            }
+
+            foreach (var focus in _focusMap)
+            {
+                if (!string.IsNullOrEmpty(focus.Value.Spell))
+                {
+                    _summonedItemMap[focus.Value.Spell] = focus.Value.Item;
+                }
+            }
+        }
 
         private static string _requester;
 
@@ -71,7 +133,25 @@ namespace E3Core.Classes
         private static long _nextInventoryCheck = 0;
         private static long _nextInventoryCheckInterval = 5000;
 
-        private const int EnchanterPetPrimaryWeaponId = 10702;
+        private static int[] GetEnchanterPrimaryWeaponIds()
+        {
+            int[] baseIds = { 10702, 10653, 10648, 41, 60 };
+            string additionalIdsString = E3.CharacterSettings.AdditionalIDsString;
+
+            if (string.IsNullOrEmpty(additionalIdsString))
+            {
+                return baseIds;
+            }
+
+            int[] additionalIds = additionalIdsString
+                .Split(',')
+                .Select(int.Parse)
+                .ToArray();
+
+            return baseIds.Concat(additionalIds).ToArray();
+        }
+
+        private static readonly int[] EnchanterPetPrimaryWeaponIds = GetEnchanterPrimaryWeaponIds();
 
         /// <summary>
         /// Accepts a pet equipment request.
@@ -117,8 +197,8 @@ namespace E3Core.Classes
 
                 if (weaponSplit.Count() != 2)
                 {
-                    MQ.Cmd($"/t {_requester} Invalid request. The request must be in the format of armpet Primary|Secondary");
-                    return;
+                    // If the player didn't specify weapons, set them to "MHW|OHW" as the default.
+                    weaponSplit = new string[] { "MHW", "OHW" };
                 }
 
                 if (!_weaponMap.TryGetValue(weaponSplit[0], out _))
@@ -133,10 +213,10 @@ namespace E3Core.Classes
                     return;
                 }
 
-                if(_spawns.TryByName(_requester, out var requesterSpawn))
+                if (_spawns.TryByName(_requester, out var requesterSpawn))
                 {
                     var theirPetId = requesterSpawn.PetID;
-                    if(theirPetId < 0)
+                    if (theirPetId < 0)
                     {
                         MQ.Cmd($"/t {_requester} You don't have a pet to equip!");
                         return;
@@ -162,6 +242,7 @@ namespace E3Core.Classes
             EventProcessor.RegisterEvent("ArmPets", armPetEvents, x =>
             {
                 E3.Bots.Broadcast("I hear you I hear you one moment please....");
+                MQ.Cmd($"/t {_requester} Arming Pet Please Give me a moment, If you move more then 30y this will fail");
                 _requester = x.match.Groups[1].ToString();
                 if (!E3.Bots.BotsConnected().Contains(_requester))
                 {
@@ -183,6 +264,7 @@ namespace E3Core.Classes
             if (Basics.InCombat()) return;
             if (!E3.CharacterSettings.AutoPetWeapons) return;
             if (!e3util.ShouldCheck(ref _nextWeaponCheck, _nextWeaponCheckInterval)) return;
+            if (CheckAllPetsEquipped()) return;
 
             ArmPets();
         }
@@ -235,7 +317,7 @@ namespace E3Core.Classes
                     }
 
                     var theirPetPrimary = MQ.Query<int>($"${{Spawn[{ownerSpawn.Name}].Pet.Primary}}");
-                    if (theirPetPrimary == 0 || theirPetPrimary == EnchanterPetPrimaryWeaponId)
+                    if (theirPetPrimary == 0 || EnchanterPetPrimaryWeaponIds.Contains(theirPetPrimary) )
                     {
                         ArmPet(theirPetId, kvp.Value);
                     }
@@ -332,7 +414,7 @@ namespace E3Core.Classes
             var currentY = MQ.Query<double>("${Me.Y}");
             var currentZ = MQ.Query<double>("${Me.Z}");
 
-            if (!GiveWeapons(petId, weapons ?? "Water|Fire"))
+            if (!GiveWeapons(petId, weapons ?? "MHW|OHW"))
             {
                 if (_isExternalRequest)
                 {
@@ -351,28 +433,54 @@ namespace E3Core.Classes
             }
 			Casting.TrueTarget(petId);
            
-			var spell = new Spell(_armorSpell);
+            var spell = new Spell(_armorSpell);
+            bool armorfound = MQ.Query<bool>($"${{FindItem[={_armorItem}]}}");
             Int32 castAttempts = 0;
-            if(Casting.CheckReady(spell) && Casting.CheckMana(spell))
-			{
-				while(Casting.Cast(petId, spell) == CastReturn.CAST_FIZZLE)
-				{
-                    if (castAttempts > 7) break;
-					MQ.Delay(1500);
-                    castAttempts++;
-				}
-			}
-			castAttempts = 0;
-			spell = new Spell(_focusSpell);
-			if (Casting.CheckReady(spell) && Casting.CheckMana(spell))
-			{
-				while (Casting.Cast(petId, spell) == CastReturn.CAST_FIZZLE)
-				{
-					if (castAttempts > 7) break;
-					MQ.Delay(1500);
-					castAttempts++;
-				}
-			}
+            if (armorfound)
+            {
+                GiveArmorToPet(petId);
+            }
+            else
+            {
+                if (Casting.CheckReady(spell) && Casting.CheckMana(spell))
+                {
+                    while (Casting.Cast(petId, spell) == CastReturn.CAST_FIZZLE)
+                    {
+                        if (castAttempts > 7) break;
+                        MQ.Delay(1500);
+                        castAttempts++;
+                    }
+                }
+                GiveArmorToPet(petId);
+            }
+
+            foreach (var focus in _focusMap)
+            {
+                if (!string.IsNullOrEmpty(focus.Value.Spell))
+                {
+                    castAttempts = 0;
+                    spell = new Spell(focus.Value.Spell);
+                    bool focusfound = MQ.Query<bool>($"${{FindItem[={focus.Value.Item}]}}");
+                    if (focusfound)
+                    {
+                        GiveFocusToPet(petId, focus.Value.Item);
+                    }
+                    else
+                    {
+                        if (Casting.CheckReady(spell) && Casting.CheckMana(spell))
+                        {
+                            while (Casting.Cast(petId, spell) == CastReturn.CAST_FIZZLE)
+                            {
+                                if (castAttempts > 7) break;
+                                MQ.Delay(1500);
+                                castAttempts++;
+                            }
+
+                        }
+                        GiveFocusToPet(petId, focus.Value.Item);
+                    }
+                }
+            }
 
 			var pet = _spawns.Get().FirstOrDefault(f => f.ID == petId);
             if (pet != null)
@@ -392,6 +500,27 @@ namespace E3Core.Classes
             _isExternalRequest = false;
         }
 
+        private static void GiveArmorToPet(int petId)
+        {
+            var armor = $"{_armorItem}";
+            var foundArmorBag = MQ.Query<bool>($"${{FindItem[={_armorItem}]}}");
+            if (foundArmorBag)
+            {
+                PickUpArmor(armor);
+                e3util.GiveItemOnCursorToTarget(false, false);
+            }
+        }
+        private static void GiveFocusToPet(int petId, string focusItem)
+        {
+            var focus = $"{focusItem}";
+            var foundFocusBag = MQ.Query<bool>($"${{FindItem[={focusItem}]}}");
+            if (foundFocusBag)
+            {
+                PickUpFocus(focus);
+                e3util.GiveItemOnCursorToTarget(false, false);
+            }
+        }        
+
         private static bool GiveWeapons(int petId, string weaponString)
         {
             var weapons = weaponString.Split('|');
@@ -399,8 +528,8 @@ namespace E3Core.Classes
             _weaponMap.TryGetValue(weapons[0], out var primary);
             _weaponMap.TryGetValue(weapons[1], out var secondary);
 
-            if (primary != null) weaponsToEquip.Add(primary);
-            if (secondary != null) weaponsToEquip.Add(secondary);
+            if (primary != default && primary.Item != null) weaponsToEquip.Add(primary.Item);
+            if (secondary != default && secondary.Item != null) weaponsToEquip.Add(secondary.Item);
 
             try
             {
@@ -477,11 +606,18 @@ namespace E3Core.Classes
                     }
                 }
 
-                var summonResult = SummonItem(_weaponSpell, true);
-                if (!summonResult.success)
+                foreach (var entry in _weaponMap)
                 {
-                    E3.Bots.Broadcast($"\ar{summonResult.error}");
-                    return false;
+                    if (entry.Value.Item == weapon)
+                    {
+                        var summonResult = SummonItem(entry.Value.Spell, true);
+                        if (!summonResult.success)
+                        {
+                            E3.Bots.Broadcast($"\ar{summonResult.error}");
+                            return false;
+                        }
+                        break;
+                    }
                 }
             }
 
@@ -498,46 +634,59 @@ namespace E3Core.Classes
             MQ.Cmd($"/nomodkey /itemnotify in pack{packSlot} {inPackSlot} leftmouseup");
         }
 
+        private static void PickUpArmor(string armorName)
+        {
+            var itemSlot = MQ.Query<int>($"${{FindItem[{armorName}].ItemSlot}}");
+            var itemSlot2 = MQ.Query<int>($"${{FindItem[{armorName}].ItemSlot2}}");
+            var packSlot = itemSlot - 22;
+            var inPackSlot = itemSlot2 + 1;
+
+            MQ.Cmd($"/nomodkey /itemnotify in pack{packSlot} {inPackSlot} leftmouseup");
+        }
+        private static void PickUpFocus(string focusName)
+        {
+            var itemSlot = MQ.Query<int>($"${{FindItem[{focusName}].ItemSlot}}");
+            var itemSlot2 = MQ.Query<int>($"${{FindItem[{focusName}].ItemSlot2}}");
+            var packSlot = itemSlot - 22;
+            var inPackSlot = itemSlot2 + 1;
+
+            MQ.Cmd($"/nomodkey /itemnotify in pack{packSlot} {inPackSlot} leftmouseup");
+        }
+
+
         private static (bool success, string error) SummonItem(string itemToSummon, bool inventoryTheSummonedItem)
         {
             var id = E3.CurrentId;
             Casting.TrueTarget(id);
             var spell = new Spell(itemToSummon);
-            if (Casting.CheckReady(spell))
+            int cursorId = 0;
+            // try several times to summon
+            for (int i = 1; i <= 5; i++)
             {
-                int cursorId = 0;
-                // try several times to summon
-                for (int i = 1; i <= 5; i++)
-                {
-                    Casting.Cast(id, spell);
-                    e3util.YieldToEQ();
-                    cursorId = MQ.Query<int>("${Cursor.ID}");
-                    if (cursorId > 0) break;
-                }
-
-                if (cursorId == 0)
-                {
-                    return (false, "Unable to complete spell cast");
-                }
-
-                e3util.ClearCursor();
-
-                if (_summonedItemMap.TryGetValue(itemToSummon, out var summonedItem))
-                {
-                    MQ.Cmd($"/nomodkey /itemnotify \"{summonedItem}\" rightmouseup");
-                    MQ.Delay(3000, "${Cursor.ID}");
-                    if (inventoryTheSummonedItem)
-                    {
-                        e3util.ClearCursor();
-                    }
-                }
-
-                return (true, null);
+                Casting.Cast(id, spell);
+                e3util.YieldToEQ();
+                cursorId = MQ.Query<int>("${Cursor.ID}");
+                if (cursorId > 0) break;
             }
-            else
+
+            if (cursorId == 0)
             {
-                return (false, $"Unable to cast {itemToSummon} because it wasn't ready");
+                return (false, "Unable to complete spell cast");
             }
+
+            e3util.ClearCursor();
+
+            if (_summonedItemMap.TryGetValue(itemToSummon, out var summonedItem))
+            {
+                MQ.Cmd($"/nomodkey /itemnotify \"{summonedItem}\" rightmouseup");
+                MQ.Delay(3000, "${Cursor.ID}");
+                if (inventoryTheSummonedItem)
+                {
+                    e3util.ClearCursor();
+                }
+            }
+
+            return (true, null);
         }
 
         private static bool CheckInventory()
@@ -672,6 +821,30 @@ namespace E3Core.Classes
             }
 
             return hasOpenInventorySlot;
+        }
+	
+        private static bool CheckAllPetsEquipped()
+        {
+            bool allPetsEquipped = true;
+            var myPetPrimary = MQ.Query<int>("${Me.Pet.Primary}");
+            foreach (var kvp in E3.CharacterSettings.PetWeapons)
+            {
+                if (_spawns.TryByName(kvp.Key, out var ownerSpawn))
+                {
+                    var theirPetPrimary = MQ.Query<int>($"${{Spawn[{ownerSpawn.Name}].Pet.Primary}}");
+                    if (theirPetPrimary == 0 || EnchanterPetPrimaryWeaponIds.Contains(theirPetPrimary) )
+                    {
+                        // If any pet is not equipped or has the Enchanter's primary weapon, set the flag to false
+                        allPetsEquipped = false;
+                        break; // Exit the loop early since we already know not all pets are equipped
+                    }
+                }
+            }
+            if (myPetPrimary == 0 || !allPetsEquipped)
+            {
+                allPetsEquipped = false;
+            }
+            return allPetsEquipped;
         }
     }
 }
